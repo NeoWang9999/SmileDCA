@@ -16,7 +16,7 @@ node_modules/
 wrangler.toml
 
 # Private local planning notes and visual references
-docs/
+.docs/
 
 # Logs
 *.log
