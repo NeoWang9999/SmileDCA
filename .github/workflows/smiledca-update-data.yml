@@ -1,0 +1,97 @@
+name: SmileDCA data update
+
+on:
+  workflow_dispatch:
+    inputs:
+      symbols:
+        description: "Optional comma-separated ETF symbols to refresh, for example QQQ,SPY,TLT"
+        required: false
+        default: ""
+  schedule:
+    # Runs after the US market close with a buffer. Times are UTC.
+    - cron: "30 3 * * 2-6"
+
+permissions:
+  contents: write
+
+jobs:
+  update-smiledca-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Update ETF universe and cached prices
+        run: |
+          if [ -n "${{ github.event.inputs.symbols }}" ]; then
+            node scripts/update-data.mjs --symbols="${{ github.event.inputs.symbols }}"
+          else
+            node scripts/update-data.mjs
+          fi
+
+      - name: Commit updated data files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No SmileDCA data changes to commit."
+          else
+            git commit -m "Update SmileDCA market data"
+            git push
+          fi
+
+      - name: Upload data files to Cloudflare R2 when configured
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CLOUDFLARE_R2_BUCKET" ]; then
+            echo "Cloudflare R2 secrets are not configured. Skipping R2 upload."
+            exit 0
+          fi
+
+          find data -type f -name "*.json" -print0 | while IFS= read -r -d '' file; do
+            npx --yes wrangler@latest r2 object put "$CLOUDFLARE_R2_BUCKET/$file" --file "$file" --remote
+          done
+
+      - name: Deploy updated site to Cloudflare Pages when configured
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "Cloudflare Pages secrets are not configured. Skipping Pages deploy."
+            exit 0
+          fi
+
+          rm -rf dist
+          mkdir -p dist
+          cp index.html _headers dist/
+          cp -R data dist/data
+          cp pages/_worker.js dist/_worker.js
+
+          cat > wrangler.toml <<EOF
+          name = "smiledca"
+          pages_build_output_dir = "dist"
+          compatibility_date = "2026-06-01"
+          EOF
+
+          if [ -n "$CLOUDFLARE_R2_BUCKET" ]; then
+            cat >> wrangler.toml <<EOF
+          [[r2_buckets]]
+          binding = "SMILEDCA_DATA"
+          bucket_name = "$CLOUDFLARE_R2_BUCKET"
+          EOF
+          fi
+
+          npx --yes wrangler@latest pages project create smiledca --production-branch main || true
+          npx --yes wrangler@latest pages deploy dist --project-name smiledca --branch main --commit-hash "$(git rev-parse HEAD)"

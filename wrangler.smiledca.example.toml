@@ -1,0 +1,7 @@
+name = "smiledca-price-worker"
+main = "workers/smiledca-price-worker.js"
+compatibility_date = "2026-06-01"
+
+[[r2_buckets]]
+binding = "SMILEDCA_DATA"
+bucket_name = "smiledca-data"
