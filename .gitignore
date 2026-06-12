@@ -17,6 +17,7 @@ wrangler.toml
 
 # Private local planning notes and visual references
 .docs/
+.docx/
 
 # Logs
 *.log
