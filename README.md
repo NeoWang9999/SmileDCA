@@ -1,5 +1,11 @@
 # SmileDCA
 
+<p align="center">
+  <img src="assets/SmileDCA-logo.png" alt="SmileDCA logo" width="128">
+</p>
+
+[简体中文](README.zh-CN.md)
+
 SmileDCA is a lightweight, browser-side portfolio DCA backtest simulator for ETF investors.
 
 > “业余投资者定期定投指数基金，往往能战胜绝大多数专业投资者”——沃伦·巴菲特
