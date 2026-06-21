@@ -34,8 +34,8 @@
         --danger: #ff7474;
         --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
         --blur: blur(22px) saturate(138%);
-        --search-glass-blur: 140px;
-        --search-glass-bg: rgba(8, 10, 14, 0.74);
+        --search-glass-blur: 2px;
+        --search-glass-bg: rgba(3, 16, 43, 0.74);
         --search-glass-highlight: rgba(255, 255, 255, 0.18);
         --search-glass-border: rgba(255, 255, 255, 0.26);
       }
@@ -153,12 +153,12 @@
       }
 
       .topbar {
-        min-height: 68px;
+        min-height: 78px;
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
         gap: 16px;
-        padding: 12px 12px 12px 18px;
+        padding: 12px 12px 12px 16px;
         border-radius: 20px;
       }
 
@@ -170,54 +170,47 @@
       }
 
       .brand-mark {
-        width: 42px;
-        height: 42px;
-        display: grid;
-        place-items: center;
+        width: 58px;
+        height: 58px;
+        display: block;
         flex: 0 0 auto;
-        border-radius: 14px;
-        background:
-          radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.85), rgba(255, 210, 122, 0.26) 34%, transparent 64%),
-          rgba(255, 255, 255, 0.06);
-        border: 1px solid var(--line);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-radius: 0;
+        overflow: hidden;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
       }
 
-      .brand-mark svg {
-        width: 24px;
-        height: 24px;
+      .brand-mark img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       .brand-copy {
+        display: grid;
+        gap: 4px;
         min-width: 0;
+      }
+
+      .brand-title {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(22px, 2.2vw, 32px);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 0;
       }
 
       .brand-summary {
         max-width: 720px;
-        margin: 8px 0 0;
+        margin: 0;
         color: var(--muted);
-        font-size: clamp(12px, 1vw, 14px);
+        font-size: clamp(11px, 0.95vw, 13px);
         font-weight: 650;
         line-height: 1.55;
-      }
-
-      .eyebrow {
-        margin: 0 0 3px;
-        color: var(--gold);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-
-      .brand h1 {
-        margin: 0;
-        font-size: clamp(20px, 2.3vw, 30px);
-        line-height: 1;
         letter-spacing: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .serif {
@@ -370,11 +363,21 @@
         min-width: 0;
       }
 
+      .panel-help {
+        margin-top: 0;
+      }
+
       .panel-title h2,
       .panel-title h3 {
         margin: 0;
         font-size: 17px;
         letter-spacing: 0;
+      }
+
+      .setup-panel .panel-title h2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .panel-title p {
@@ -826,31 +829,60 @@
         position: absolute;
         left: 50%;
         bottom: calc(100% + 9px);
-        z-index: 20;
+        z-index: 260;
         width: min(230px, 70vw);
         padding: 9px 10px;
-        border: 1px solid var(--line);
+        border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 12px;
         color: var(--text);
-        background: var(--surface-strong);
-        box-shadow: 0 14px 44px rgba(0, 0, 0, 0.24);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.065)),
+          rgba(8, 10, 14, 0.76);
+        box-shadow:
+          0 18px 56px rgba(0, 0, 0, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(28px) saturate(175%);
+        -webkit-backdrop-filter: blur(28px) saturate(175%);
         opacity: 0;
         pointer-events: none;
         text-align: left;
         text-transform: none;
         letter-spacing: 0;
+        white-space: pre-line;
         font-size: 12px;
         font-weight: 500;
         line-height: 1.45;
         transform: translate(-50%, 4px);
       }
 
+      body.light .info-dot::after {
+        border-color: rgba(255, 255, 255, 0.68);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.56)),
+          rgba(255, 255, 255, 0.74);
+        box-shadow:
+          0 18px 48px rgba(42, 34, 24, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      }
+
+      .panel-help::after {
+        left: 0;
+        right: auto;
+        top: calc(100% + 10px);
+        bottom: auto;
+        width: min(340px, calc(100vw - 42px));
+        transform: translateY(4px);
+      }
+
       .info-dot:hover::after,
       .info-dot:focus-visible::after {
         opacity: 1;
         transform: translate(-50%, 0);
+      }
+
+      .panel-help:hover::after,
+      .panel-help:focus-visible::after {
+        transform: translateY(0);
       }
 
       .metric[data-tip],
@@ -878,16 +910,20 @@
         content: attr(data-tip);
         position: absolute;
         top: calc(100% + 10px);
-        z-index: 80;
+        z-index: 260;
         width: min(260px, 72vw);
         padding: 10px 11px;
-        border: 1px solid var(--line);
+        border: 1px solid rgba(255, 255, 255, 0.24);
         border-radius: 13px;
         color: var(--text);
-        background: var(--surface-strong);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.065)),
+          rgba(8, 10, 14, 0.76);
+        box-shadow:
+          0 18px 56px rgba(0, 0, 0, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(28px) saturate(175%);
+        -webkit-backdrop-filter: blur(28px) saturate(175%);
         opacity: 0;
         pointer-events: none;
         text-align: left;
@@ -899,6 +935,19 @@
         line-height: 1.45;
         transform: translateY(-4px);
         transition: opacity 0.18s ease, transform 0.18s ease;
+      }
+
+      body.light .metric[data-tip]::after,
+      body.light .legend button[data-tip]::after,
+      body.light .chart-view-tools [data-tip]::after,
+      body.light .kline-selector button[data-tip]::after {
+        border-color: rgba(255, 255, 255, 0.68);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.56)),
+          rgba(255, 255, 255, 0.74);
+        box-shadow:
+          0 18px 48px rgba(42, 34, 24, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
       .metric[data-tip]::after {
@@ -1058,6 +1107,49 @@
         overflow: visible;
         border-radius: 20px;
         padding: 14px;
+        transition:
+          border-color 180ms ease,
+          background 180ms ease,
+          opacity 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .asset-card.is-disabled {
+        border-color: rgba(255, 255, 255, 0.09);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045)),
+          rgba(255, 255, 255, 0.075);
+        box-shadow: none;
+      }
+
+      body.light .asset-card.is-disabled {
+        border-color: rgba(20, 19, 22, 0.1);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(236, 239, 244, 0.56)),
+          rgba(255, 255, 255, 0.68);
+      }
+
+      .asset-card.is-disabled .ticker {
+        color: var(--muted);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.055)),
+          rgba(255, 255, 255, 0.04);
+        box-shadow: none;
+      }
+
+      body.light .asset-card.is-disabled .ticker {
+        color: rgba(20, 19, 22, 0.52);
+        background: rgba(20, 19, 22, 0.06);
+      }
+
+      .asset-card.is-disabled .asset-name strong,
+      .asset-card.is-disabled .field label {
+        color: var(--muted);
+      }
+
+      .asset-card.is-disabled .asset-name span,
+      .asset-card.is-disabled input {
+        color: var(--faint);
       }
 
       .asset-head {
@@ -1157,6 +1249,14 @@
       .switch.off span {
         transform: translateX(0);
         background: var(--faint);
+      }
+
+      .asset-card.is-disabled .switch {
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      body.light .asset-card.is-disabled .switch {
+        background: rgba(20, 19, 22, 0.055);
       }
 
       .asset-grid {
@@ -1611,14 +1711,28 @@
         min-width: 178px;
         padding: 10px 11px;
         border-radius: 15px;
-        border: 1px solid var(--line);
-        background: var(--surface-strong);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.065)),
+          rgba(8, 10, 14, 0.76);
+        backdrop-filter: blur(28px) saturate(175%);
+        -webkit-backdrop-filter: blur(28px) saturate(175%);
+        box-shadow:
+          0 18px 56px rgba(0, 0, 0, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16);
         pointer-events: none;
         transform: translate(-50%, calc(-100% - 14px));
         opacity: 0;
+      }
+
+      body.light .tooltip {
+        border-color: rgba(255, 255, 255, 0.68);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.56)),
+          rgba(255, 255, 255, 0.74);
+        box-shadow:
+          0 18px 48px rgba(42, 34, 24, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
       .tooltip.visible {
@@ -1773,10 +1887,6 @@
           grid-template-columns: 1fr;
         }
 
-        .brand h1 {
-          white-space: normal;
-        }
-
         .top-actions {
           display: grid;
           grid-template-columns: auto auto 1fr;
@@ -1800,15 +1910,11 @@
       <header class="topbar glass">
         <div class="brand">
           <div class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 14.2C7.5 5.6 14.9 3.3 20.4 4.2C19.1 10 14.5 18.1 5.8 19.8C6.6 17.8 8.1 15.9 10.1 14.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M14.2 5.1C15.6 8.1 17.2 11.6 20 13.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-            </svg>
+            <img src="assets/SmileDCA-logo.png" alt="" />
           </div>
           <div class="brand-copy">
-            <p class="eyebrow" data-i18n="eyebrow">Portfolio DCA Lab</p>
-            <h1><span class="serif">Smile</span>DCA</h1>
-            <p class="brand-summary" data-i18n="summaryText">Set independent DCA rules for multiple assets, run a portfolio backtest, and review key results.</p>
+            <h1 class="brand-title">SmileDCA</h1>
+            <p class="brand-summary" data-i18n="summaryText">Amateur investors who regularly invest in index funds often beat the vast majority of professionals. — Warren Buffett</p>
           </div>
         </div>
 
@@ -1841,8 +1947,12 @@
         <aside class="setup-panel panel glass">
           <div class="panel-header">
             <div class="panel-title">
-              <h2 data-i18n="setupTitle">Strategy setup</h2>
-              <p data-i18n="setupSubtitle">Configure each asset independently with daily ETF price files.</p>
+              <h2>
+                <span data-i18n="setupTitle">Test your DCA plan</span>
+                <span class="info-dot panel-help" tabindex="0" data-i18n-tip="setupHelpTip" data-tip="Step 1: Choose the assets you plan to invest in regularly.
+Step 2: Set the DCA dates, frequency, and amount.
+Step 3: Run the backtest to see how your plan performs.">i</span>
+              </h2>
             </div>
           </div>
 
@@ -1850,7 +1960,7 @@
             <div class="pool-header">
               <div>
                 <h3 data-i18n="assetPool">Asset pool</h3>
-                <p data-i18n="assetPoolHint">Select a ticker to include it in the strategy. Use the x on selected chips to remove it.</p>
+                <p data-i18n="assetPoolHint">Choose the assets you plan to invest in regularly.</p>
               </div>
             </div>
             <div class="asset-search">
@@ -1938,11 +2048,10 @@
     <script>
       const copy = {
         en: {
-          eyebrow: "Portfolio DCA Lab",
           reset: "Reset",
-          summaryText: "Set independent DCA rules for multiple assets, run a portfolio backtest, and review key results.",
-          setupTitle: "Strategy setup",
-          setupSubtitle: "Configure each asset independently with daily ETF price files.",
+          summaryText: "Amateur investors who regularly invest in index funds often beat the vast majority of professionals. — Warren Buffett",
+          setupTitle: "Test your DCA plan",
+          setupHelpTip: "Step 1: Choose the assets you plan to invest in regularly.\nStep 2: Set the DCA dates, frequency, and amount.\nStep 3: Run the backtest to see how your plan performs.",
           runBacktest: "Run backtest",
           runHint: "After setting the asset pool and rules, run the backtest to generate the dashboard.",
           resultWaiting: "Waiting for backtest",
@@ -1974,7 +2083,7 @@
           noDataOverlap: "{symbol}: the selected date range does not overlap available data.",
           assetPool: "Asset pool",
           add: "Add",
-          assetPoolHint: "Search a ticker or fund name, then click a result to add it to the selected pool.",
+          assetPoolHint: "Choose the assets you plan to invest in regularly.",
           assetSearchPlaceholder: "Search ticker or fund name",
           selectedAssets: "Selected assets",
           noSelectedAssets: "No selected assets",
@@ -2048,12 +2157,10 @@
           visibleRangeTip: "The date range currently visible in the chart."
         },
         zh: {
-          eyebrow: "组合定投实验室",
           reset: "重置",
-          dataMode: "日线数据",
-          summaryText: "为多个标的分别设置定投规则，运行组合回测，并查看关键指标和走势。",
-          setupTitle: "策略配置",
-          setupSubtitle: "每个标的独立设置，使用本地每日更新的 ETF 日线数据。",
+          summaryText: "“业余投资者定期定投指数基金，往往能战胜绝大多数专业投资者”——沃伦·巴菲特",
+          setupTitle: "测试你的定投计划",
+          setupHelpTip: "步骤1： 选择你打算定投的标的\n步骤2： 设置定投时间、频率和金额\n步骤3： 点击运行回测，看看你的计划表现如何！",
           runBacktest: "运行回测",
           runHint: "配置好标的池和各标的规则后，点击运行生成回测看板。",
           resultWaiting: "等待运行回测",
@@ -2085,7 +2192,7 @@
           noDataOverlap: "{symbol}: 当前日期区间与可用数据没有重叠。",
           assetPool: "标的池",
           add: "添加",
-          assetPoolHint: "搜索代码或基金名称，点击匹配结果后加入下方标签池。",
+          assetPoolHint: "选出你打算定投的标的",
           assetSearchPlaceholder: "搜索代码或基金名称",
           selectedAssets: "已选标的",
           noSelectedAssets: "暂无已选标的",
@@ -3167,6 +3274,9 @@
         $$("[data-i18n-placeholder]").forEach((node) => {
           node.placeholder = t(node.dataset.i18nPlaceholder);
         });
+        $$("[data-i18n-tip]").forEach((node) => {
+          node.dataset.tip = t(node.dataset.i18nTip);
+        });
         $$("[data-lang]").forEach((button) => button.classList.toggle("active", button.dataset.lang === state.lang));
       }
 
@@ -3259,13 +3369,22 @@
         portal.style.setProperty("--search-results-max-height", `${Math.max(120, maxHeight - 14)}px`);
       }
 
+      function closeAssetSearch() {
+        if (!state.assetQuery) {
+          positionAssetSearchResults();
+          return;
+        }
+        state.assetQuery = "";
+        renderAssetPool();
+      }
+
       function renderAssetList() {
         const container = $("#assetList");
         container.innerHTML = state.assets
           .map((asset, index) => {
             const meta = assetMeta(asset.symbol);
             return `
-              <article class="asset-card glass" data-index="${index}">
+              <article class="asset-card glass ${asset.enabled ? "is-enabled" : "is-disabled"}" data-index="${index}">
                 <div class="asset-head">
                   <div class="asset-id">
                     <div class="ticker">${asset.symbol}</div>
@@ -3322,40 +3441,30 @@
 
       const benchmarkWinQuips = [
         "你的小脑袋瓜一定充满了智慧！",
-        "这波不是运气，是策略有点东西。",
-        "恭喜，你暂时获得了嘲笑指数基金的资格。",
-        "指数同学先坐下，这回你来讲两句。"
+        "恭喜你，获得了嘲笑指数基金的资格。",
       ];
 
       const benchmarkLoseQuips = [
-        "尴尬了！就这还研究啥策略呢，直接买指数吧！",
-        "这回策略有点努力过头了，指数在旁边默默喝茶。",
-        "别急，至少我们知道了哪里不该太自信。",
-        "策略还在热身，SPY 已经跑完一圈了。"
+        "尴尬了！还不如直接买指数呢！",
+        "越努力越不行，还不如直接买指数！",
       ];
 
       const benchmarkTieQuips = [
-        "这局算握手言和，谁也别太得意。",
-        "差距小到可以先去倒杯咖啡再说。"
+        "和直接买指数的差距不大。",
       ];
 
       const benchmarkWinQuipsEn = [
         "Your little brain is clearly doing premium work.",
-        "That was not luck; the strategy actually brought receipts.",
         "Congrats, you have temporary permission to smirk at index funds.",
-        "SPY can take a seat for this round."
       ];
 
       const benchmarkLoseQuipsEn = [
         "Awkward. The index fund was right there the whole time.",
         "This strategy worked very hard to make less money. Respectfully, impressive.",
-        "At least the review is clear: confidence may have been slightly overfunded.",
-        "The strategy was still warming up while SPY had already finished the lap."
       ];
 
       const benchmarkTieQuipsEn = [
         "This one is basically a handshake. Nobody gets to brag too much.",
-        "The gap is tiny. Go get coffee before declaring victory."
       ];
 
       function pickBenchmarkQuip(pool, seed) {
@@ -4651,7 +4760,12 @@
         });
 
         document.addEventListener("keydown", (event) => {
-          if (event.key !== "Escape" || !state.chartExpanded) return;
+          if (event.key !== "Escape") return;
+          if (state.assetQuery) {
+            closeAssetSearch();
+            $("#assetSearch").blur();
+          }
+          if (!state.chartExpanded) return;
           state.chartExpanded = false;
           renderChartExpandedState();
           renderChartViewTools();
@@ -4662,6 +4776,9 @@
         document.addEventListener("click", (event) => {
           if (event.target.closest("[data-frequency-trigger]") || event.target.closest("#frequencyPortal")) return;
           closeFrequencyMenu();
+          if (!event.target.closest("#assetSearch") && !event.target.closest("#assetResults")) {
+            closeAssetSearch();
+          }
         });
 
         $("#chartWrap").addEventListener("pointerdown", beginChartDrag);
@@ -4678,7 +4795,7 @@
         });
         window.addEventListener("scroll", () => {
           closeFrequencyMenu();
-          positionAssetSearchResults();
+          closeAssetSearch();
         }, true);
       }
 
