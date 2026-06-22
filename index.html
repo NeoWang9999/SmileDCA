@@ -204,13 +204,41 @@
       }
 
       .brand-summary {
-        max-width: 720px;
+        max-width: min(860px, 72vw);
         margin: 0;
         color: var(--muted);
-        font-size: clamp(11px, 0.95vw, 13px);
+        font-size: clamp(10px, 0.86vw, 13px);
         font-weight: 650;
         line-height: 1.55;
         letter-spacing: 0;
+        white-space: nowrap;
+      }
+
+      .site-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        padding: 2px 8px 0;
+        color: var(--faint);
+        font-size: 12px;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      .site-footer a {
+        color: var(--gold);
+        font-weight: 750;
+        text-decoration: none;
+        text-underline-offset: 4px;
+        transition: color 180ms ease, opacity 180ms ease;
+      }
+
+      .site-footer a:hover {
+        color: var(--cyan);
+        text-decoration: underline;
       }
 
       .serif {
@@ -1829,6 +1857,18 @@
       }
 
       @media (max-width: 1180px) {
+        .topbar {
+          grid-template-columns: 1fr;
+        }
+
+        .brand-summary {
+          max-width: 100%;
+        }
+
+        .top-actions {
+          justify-content: flex-start;
+        }
+
         .metric-grid {
           grid-template-columns: repeat(5, minmax(108px, 1fr));
         }
@@ -1837,14 +1877,6 @@
       @media (max-width: 820px) {
         .app {
           padding: 12px;
-        }
-
-        .topbar {
-          grid-template-columns: 1fr;
-        }
-
-        .top-actions {
-          justify-content: flex-start;
         }
 
         .detail-row {
@@ -1883,6 +1915,16 @@
       }
 
       @media (max-width: 560px) {
+        .brand-summary {
+          white-space: normal;
+        }
+
+        .site-footer {
+          align-items: center;
+          flex-direction: column;
+          gap: 2px;
+        }
+
         .asset-grid {
           grid-template-columns: 1fr;
         }
@@ -2040,6 +2082,11 @@ Step 3: Run the backtest to see how your plan performs.">i</span>
           </section>
         </section>
       </main>
+
+      <footer class="site-footer">
+        <span data-i18n="footerText">Have ideas, feedback, or something broken?</span>
+        <a href="https://github.com/NeoWang9999/SmileDCA/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerIssueLink">Open an issue on GitHub</a>
+      </footer>
     </div>
 
     <div class="frequency-menu portal" id="frequencyPortal" role="listbox" aria-label="Frequency options"></div>
@@ -2050,6 +2097,8 @@ Step 3: Run the backtest to see how your plan performs.">i</span>
         en: {
           reset: "Reset",
           summaryText: "Amateur investors who regularly invest in index funds often beat the vast majority of professionals. — Warren Buffett",
+          footerText: "Have ideas, feedback, or something broken?",
+          footerIssueLink: "Open an issue on GitHub",
           setupTitle: "Test your DCA plan",
           setupHelpTip: "Step 1: Choose the assets you plan to invest in regularly.\nStep 2: Set the DCA dates, frequency, and amount.\nStep 3: Run the backtest to see how your plan performs.",
           runBacktest: "Run backtest",
@@ -2159,6 +2208,8 @@ Step 3: Run the backtest to see how your plan performs.">i</span>
         zh: {
           reset: "重置",
           summaryText: "“业余投资者定期定投指数基金，往往能战胜绝大多数专业投资者”——沃伦·巴菲特",
+          footerText: "有建议、想法，或者发现哪里不对？",
+          footerIssueLink: "欢迎在 GitHub 提 issue",
           setupTitle: "测试你的定投计划",
           setupHelpTip: "步骤1： 选择你打算定投的标的\n步骤2： 设置定投时间、频率和金额\n步骤3： 点击运行回测，看看你的计划表现如何！",
           runBacktest: "运行回测",
